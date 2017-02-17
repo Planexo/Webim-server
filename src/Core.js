@@ -44,7 +44,7 @@ var Core = function(Application){
 		//------------------------------------------------------------------------- 
 		if(Application) 
 		Application.use(function(req, res, next) {
-			var err = new Error('Not Found');
+			var err = new Error('Route Not Found');
 			err.status = 404;
 			next(err);
 		});
@@ -59,7 +59,7 @@ var Core = function(Application){
 
 			// render the error page
 			res.status(err.status || 500);
-			res.render('error');
+			res.json({'error':err.message});
 		});
 
 	} 

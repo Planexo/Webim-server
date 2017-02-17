@@ -15,13 +15,12 @@ router.get('/', function(req, res, next) {
 var IfcCtrl = require('../Controller/IfcCtrl')(Auth);
 
 var base = '/ifc';
+router.get(base+'/?:directory', IfcCtrl.getAll);
 router.get(base+'/:file', IfcCtrl.get);
-router.get(base+'/', IfcCtrl.getAll);
-router.get(base+'/parts/:file', IfcCtrl.getParts); 
-router.get(base+'/mtl', IfcCtrl.getMtl); 
-router.get(base+'/mtl/:file', IfcCtrl.getMtl);
-router.get(base+'/obj', IfcCtrl.getObj); 
+router.get(base+'/parts/:file', IfcCtrl.getParts);  
+router.get(base+'/mtl/:file', IfcCtrl.getMtl); 
 router.get(base+'/obj/:file', IfcCtrl.getObj); 
+router.post(base, IfcCtrl.post); 
 
 
 

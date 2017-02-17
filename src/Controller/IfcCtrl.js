@@ -48,7 +48,7 @@ var IfcCtrl = function(Auth){
 		//conversion : à terminer
 		//var mtl = bimapi.IfcToMtl('ifc','./data');
  
-		res.json({data:content});
+		res.json({mtl:content});
 
 	}
 
@@ -63,7 +63,17 @@ var IfcCtrl = function(Auth){
 		//conversion : à terminer
 		//var obj = bimapi.IfcToObj('ifc','./data');
 
-		res.json({data: content});
+		res.json({obj: content});
+	}
+
+	self.post = function (req, res, next) {
+		console.log("posting ifc")
+
+		console.log(req.body) 
+		console.log(req.body.directory) 
+		console.log(req.body.test) 
+
+		res.json({posted:true});
 	}
 
 	return self;
