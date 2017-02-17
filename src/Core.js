@@ -19,11 +19,19 @@ var Core = function(Application){
 	}
 
 	self.run = function (argument) { 
+		//Authorization 
+		//-------------------------------------------------------------------------
+		Application.use(function(req, res, next) {
+			res.header("Access-Control-Allow-Origin", "*");
+    		res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    		next();
+    	});
+
 		//Authentification
 		//-------------------------------------------------------------------------
 		//Auth.method = Auth.kind.QUERY; 
 		if(Application) 
-			;//Application.use(Auth(Constantes).authentify);
+			Application.use(Auth(Constantes).authentify);
 		
 		//Route 
 		//-------------------------------------------------------------------------

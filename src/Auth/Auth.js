@@ -10,6 +10,7 @@ var Auth = function(Constantes){
 	var self = {};
 
 	Auth.kind = {
+		NONE: 0,
 		HTTP : 1,
 		COOKIES : 2,
 		OAUTH2 : 3,
@@ -18,7 +19,7 @@ var Auth = function(Constantes){
 	}
 
 	//cette valeur est modifiable
-	self.method = Auth.kind.OAUTH2;
+	self.method = Auth.kind.NONE;
 
 	if(typeof Auth.authentified == 'undefined'){
 		Auth.authentified = {
@@ -49,14 +50,14 @@ var Auth = function(Constantes){
 				query(req,res,reason); 
 				break;
 			default: 
-				next();
+				Auth.authentified.is = true; 
 				break;
 		}
-		
+		 
 		if(Auth.authentified.is){			
 			next();
 		}else{
-			res.status(401) 
+			res.status(401) ;
   			res.json({error:"The authentification failed : "+reason.text});
 		}
 	}
@@ -70,12 +71,12 @@ var Auth = function(Constantes){
 		// Création d'un token en partant des données de l'utilisateur
 		// comparaison entre le token et le header
 		Auth.authentified.is = true;
-		console.log("Authentified with http")
+		//console.log("Authentified with http")
 	};
 
 	var cookies = function (req,res,reason) {
 		Auth.authentified.is = true;
-		console.log("Authentified with cookies")
+		//console.log("Authentified with cookies")
 	};
 
 	var oauth2 = function (req,res,reason) {
@@ -94,12 +95,12 @@ var Auth = function(Constantes){
 			apikey:req.headers.apikey
 		};
 
-		console.log("Authentified with oauth2 and apikey : "+Constantes.API_KEY);
+		//console.log("Authentified with oauth2 and apikey : "+Constantes.API_KEY);
 	};
 
 	var query = function (req,res,reason) {
 		Auth.authentified.is = true;
-		console.log("Authentified with query")
+		//console.log("Authentified with query")
 	};
 
 	return self;

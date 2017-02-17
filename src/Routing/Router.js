@@ -15,18 +15,23 @@ router.get('/', function(req, res, next) {
 var IfcCtrl = require('../Controller/IfcCtrl')(Auth);
 
 var base = '/ifc';
-router.get(base+'/', IfcCtrl.get);
-router.get(base+'/mtl', IfcCtrl.getMtl);
+router.get(base+'/:file', IfcCtrl.get);
+router.get(base+'/', IfcCtrl.getAll);
+router.get(base+'/parts/:file', IfcCtrl.getParts); 
+router.get(base+'/mtl', IfcCtrl.getMtl); 
 router.get(base+'/mtl/:file', IfcCtrl.getMtl);
+router.get(base+'/obj', IfcCtrl.getObj); 
+router.get(base+'/obj/:file', IfcCtrl.getObj); 
+
 
 
 /*
 	OBJ
 --------------------------------------------------------------------
 */
-var ObjCtrl = require('../src/Controller/ObjCtrl');
+//var ObjCtrl = require('../src/Controller/ObjCtrl');
 
-base = '/obj';
+//base = '/obj';
 //router.get(base+'/', ObjCtrl.get);
 //router.get(base+'/:file', ObjCtrl.getObj);
 
@@ -35,9 +40,9 @@ base = '/obj';
 	MTL
 --------------------------------------------------------------------
 */
-var MtlCtrl = require('../src/Controller/MtlCtrl');
+//var MtlCtrl = require('../src/Controller/MtlCtrl');
 
-base = '/mtl';
+//base = '/mtl';
 //router.get(base+'/', MtlCtrl.get);
 //router.get(base+'/:file', MtlCtrl.getMtl);
 

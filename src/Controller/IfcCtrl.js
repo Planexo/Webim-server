@@ -1,3 +1,5 @@
+'use strict';
+
 var bimapi = require('../Bim/Api')();
 var fs = require('fs');
 
@@ -5,26 +7,49 @@ var IfcCtrl = function(Auth){
 	var self = {};
 
 	self.get = function(req, res, next){
-		console.log("getting ifc")  
-		res.json({data:'ifc'});
-	}
-	
-	self.getMtl = function(req, res, next){
-		console.log("getting mtl from ifc") 
+		console.log("getting ifc")  ;
 
 		var file = req.params.file; 
 		var fullfile = './data/'+file; 
-		
-		fs.readFile(fullfile, 'utf8', function (err,data) {
-		  if (err) {
-		    return console.log(err);
-		  } 
-		  res.json({data:data});
-		});
+ 
+		var ifc = fs.readFileSync(fullfile, 'utf8'); 
 
+		res.json({ifc:ifc});
+	}
+
+	self.getParts = function(req, res, next){
+		console.log("getting parts of ifc")  ;
+
+		var file = req.params.file; 
+		var fullfile = './data/'+file; 
+ 
+		var mtl = fs.readFileSync(fullfile+'.mtl', 'utf8'); 
+		var obj = fs.readFileSync(fullfile+'.obj', 'utf8'); 
+
+		res.json({obj:obj,mtl:mtl});
+	}
+
+	self.getAll = function(req, res, next){
+		console.log("getting all ifc files")  
+		res.json({data:'ifc files'});
+	}
+	
+	/**
+	*	Récupère le fichier ifc et le convertit en mtl
+	*/
+	self.getMtl = function(req, res, next){
+		//console.log("getting mtl from ifc") 
+
+		var file = req.params.file; 
+		var fullfile = './data/'+file; 
+ 
+		var content = fs.readFileSync(fullfile, 'utf8'); 
+
+		//conversion : à terminer
 		//var mtl = bimapi.IfcToMtl('ifc','./data');
  
-		//res.json({data:mtl});
+		res.json({data:content});
+
 	}
 
 	self.getObj = function(req, res, next){
@@ -33,16 +58,12 @@ var IfcCtrl = function(Auth){
 		var file = req.params.file; 
 		var fullfile = './data/'+file; 
 		
-		fs.readFile(fullfile, 'utf8', function (err,data) {
-		  if (err) {
-		    return console.log(err);
-		  } 
-		  res.json({data:data});
-		});
+		var content = fs.readFileSync(fullfile, 'utf8');
 
+		//conversion : à terminer
 		//var obj = bimapi.IfcToObj('ifc','./data');
 
-		//res.json({data:obj});
+		res.json({data: content});
 	}
 
 	return self;

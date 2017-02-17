@@ -24,7 +24,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //security : set some http headers (Strict-Transport-Security, X-Frame-Options, X-XSS-Protection, X-Content-Type-Options, Content-Security-Policy)
-app.use(helmet());
+
+//app.use(helmet());
 
 //Core 
 (new core(app)).run();  

@@ -4,7 +4,7 @@ var Constantes = (function () {
 
 	//Security
 	self.API_KEY = "kjlsd4568dfsds564zz";
-	self.API_RESTPATH = '/b2w';
+	self.API_RESTPATH = '/b2w_1';
 
 	//DB
 	self.DB = {
