@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/Planexo/Webim-server.svg?branch=master)](https://travis-ci.org/Planexo/Webim-server)
 # Webim-server
 Implementation du serveur
 
