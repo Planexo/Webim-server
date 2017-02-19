@@ -5,7 +5,7 @@ var fs = require('fs');
 
 var colors = require('colors');
 
-var IfcCtrl = function(Auth){
+var IfcCtrl = function(){
 	var self = {};
 
 	self.get = function(req, res, next){
@@ -14,13 +14,13 @@ var IfcCtrl = function(Auth){
 		var file = req.params.file; 
 		var fullfile = './data/'+file; 
  
-		var ifc = fs.readFileSync(fullfile, 'utf8'); 
+		var ifc = fs.readFileSync(fullfile, 'utf8');
 
-		res.json({ifc:ifc});
+		res.json({ifc:ifc}); 
 	}
 
 	self.getParts = function(req, res, next){
-		console.log("getting parts of ifc")  ;
+		console.log("getting parts of ifc".cyan)  ;
 
 		var file = req.params.file; 
 		var fullfile = './data/'+file; 
@@ -40,7 +40,7 @@ var IfcCtrl = function(Auth){
 	*	Récupère le fichier ifc et le convertit en mtl
 	*/
 	self.getMtl = function(req, res, next){
-		//console.log("getting mtl from ifc") 
+		console.log("getting mtl from ifc".cyan) 
 
 		var file = req.params.file; 
 		var fullfile = './data/'+file; 
@@ -55,7 +55,7 @@ var IfcCtrl = function(Auth){
 	}
 
 	self.getObj = function(req, res, next){
-		console.log("getting obj from ifc")  
+		console.log("getting obj from ifc".cyan)  
 		
 		var file = req.params.file; 
 		var fullfile = './data/'+file; 
@@ -69,11 +69,11 @@ var IfcCtrl = function(Auth){
 	}
 
 	self.post = function (req, res, next) {
-		console.log("posting ifc")
+		console.log("posting ifc".cyan)
 
-		console.log(req.body) 
+		/*console.log(req.body) 
 		console.log(req.body.directory) 
-		console.log(req.body.test) 
+		console.log(req.body.test) */
 
 		res.json({posted:true});
 	}

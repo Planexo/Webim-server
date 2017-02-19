@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-var Auth = require('../Auth/Auth'); 
-
 /* root */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -12,11 +10,11 @@ router.get('/', function(req, res, next) {
 	IFC
 --------------------------------------------------------------------
 */ 
-var IfcCtrl = require('../Controller/IfcCtrl')(Auth);
+var IfcCtrl = require('../Controller/IfcCtrl')();
 
 var base = '/ifc';
-router.get(base+'/?:directory', IfcCtrl.getAll);
 router.get(base+'/:file', IfcCtrl.get);
+router.get(base+'/files/:directory', IfcCtrl.getAll);
 router.get(base+'/parts/:file', IfcCtrl.getParts);  
 router.get(base+'/mtl/:file', IfcCtrl.getMtl); 
 router.get(base+'/obj/:file', IfcCtrl.getObj); 
