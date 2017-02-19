@@ -12,13 +12,13 @@ var Core = function(Application){
 	}
 
 	self.setDB = function (value) {		
-		Core.config.db = Constantes.DB[value]; 
+		Core.config.db = value; 
 	};
 	self.getDB = function () {		
 		return Core.config.db;
 	}
 
-	self.run = function (argument) { 
+	self.run = function () { 
 		//Authorization 
 		//-------------------------------------------------------------------------
 		Application.use(function(req, res, next) {
@@ -29,19 +29,16 @@ var Core = function(Application){
 
 		//Authentification
 		//-------------------------------------------------------------------------
-		if(Application) 
-			Application.use(Auth.authentify);
+		Application.use(Auth.authentify);
 		
 		//Route 
 		//-------------------------------------------------------------------------
-		if(Application) {
-			Application.use('/', Router);
-			Application.use(Constantes.API_RESTPATH, Router);
-		}
+		Application.use('/', Router);
+		Application.use(Constantes.API_RESTPATH, Router);
+		
 
 		//404 : catch 404 and forward to error handler
 		//------------------------------------------------------------------------- 
-		if(Application) 
 		Application.use(function(req, res, next) {
 			var err = new Error('Route Not Found');
 			err.status = 404;
@@ -50,7 +47,6 @@ var Core = function(Application){
 
 		// error handler
 		//-------------------------------------------------------------------------
-		if(Application) 
 		Application.use(function(err, req, res, next) {
 			// set locals, only providing error in development
 			res.locals.message = err.message;
@@ -61,6 +57,7 @@ var Core = function(Application){
 			res.json({'error':err.message});
 		});
 
+		return true;
 	} 
 
 	return self;

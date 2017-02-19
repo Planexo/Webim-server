@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "test": "nyc mocha src/* ",
+    "coverage": "nyc report --reporter=lcov",
     "start": "node ./bin/www"
   },
   "dependencies": {
