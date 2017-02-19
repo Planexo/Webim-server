@@ -39,7 +39,7 @@
     "lines": 99,
     "statements": 99,
     "functions": 99,
-    "branches": 99,
+    "branches": 90,
     "reporter": [
       "lcov"
     ],
