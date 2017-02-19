@@ -36,7 +36,7 @@ describe('Testing Ifc Controller', function () {
             		expect(objet).to.not.equal(null); 
             	};
  
-            	var response = IfcCtrl.get(req,res,function () {});				
+            	var response = IfcCtrl.get(req,res,null);				
 
                 done(); 
             }); 
@@ -54,7 +54,7 @@ describe('Testing Ifc Controller', function () {
             		expect(objet.mtl).to.not.equal(null); 
             	};
  
-            	var response = IfcCtrl.getParts(req,res,function () {});				
+            	var response = IfcCtrl.getParts(req,res,null);				
 
                 done(); 
             }); 
@@ -71,7 +71,7 @@ describe('Testing Ifc Controller', function () {
             		expect(objet.data).to.not.equal(null);  
             	};
  
-            	var response = IfcCtrl.getAll(req,res,function () {});				
+            	var response = IfcCtrl.getAll(req,res,null);				
 
                 done(); 
             }); 
@@ -88,7 +88,7 @@ describe('Testing Ifc Controller', function () {
             		expect(objet.mtl).to.not.equal(null);  
             	};
  
-            	var response = IfcCtrl.getMtl(req,res,function () {});				
+            	var response = IfcCtrl.getMtl(req,res,null);				
 
                 done(); 
             }); 
@@ -105,7 +105,7 @@ describe('Testing Ifc Controller', function () {
             		expect(objet.obj).to.not.equal(null);  
             	};
  
-            	var response = IfcCtrl.getObj(req,res,function () {});				
+            	var response = IfcCtrl.getObj(req,res,null);				
 
                 done(); 
             }); 
@@ -122,7 +122,7 @@ describe('Testing Ifc Controller', function () {
             		expect(objet.posted).to.equal(true);  
             	};
  
-            	var response = IfcCtrl.post(req,res,function () {});				
+            	var response = IfcCtrl.post(req,res,null);				
 
                 done(); 
             }); 

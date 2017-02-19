@@ -37,5 +37,5 @@ describe('Testing Application Core', function () {
                 expect(res.status).to.equal(404); 
             	done(); 
             });  
-	})
+	}) 
 })

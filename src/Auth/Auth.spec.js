@@ -143,7 +143,7 @@ describe('Authentify user with apikey verification', function () {
 
             	res.req.headers = res.req._headers; 
             	auth.method = auth.kind.APIKEY;
-            	auth.authentify(res.req,res,function () {});
+            	auth.authentify(res.req,res,null);
 
             	expect(res.status).to.equal(401); 
 
@@ -160,7 +160,7 @@ describe('Authentify user with apikey verification', function () {
 
             	res.req.headers = res.req._headers; 
             	auth.method = auth.kind.APIKEY;
-            	auth.authentify(res.req,res,function () {});
+            	auth.authentify(res.req,res,null);
 
             	expect(res.status).to.equal(401); 
 				expect(auth.isAuthentified().is).to.equal(false); 

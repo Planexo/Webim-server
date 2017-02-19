@@ -2,16 +2,16 @@ var BimApi = function () {
 	var self = {};
 
 	self.IfcToMtlObj = function (ifc, outdir) {
-		return {mtl:null, obj:null}; 
+		return {mtl:'to complete', obj:'to complete'}; 
 	}
 	self.IfcToMtl = function (ifc, outdir) {
-		return {mtl:null}; 
+		return {mtl:'to complete'}; 
 	}
 	self.IfcToObj = function (ifc, outdir) {
-		return {obj:null}; 
+		return {obj:'to complete'}; 
 	}
 	self.divideObj = function (obj, outdir) {
-		return {parts:null}; 
+		return {parts:'to complete'}; 
 	}
 
 	return self;
