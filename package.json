@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "updatePrecommitMessage":"bin/updatePrecommitMessage.sh",
     "test": "nyc mocha src/* ",
     "coverage": "nyc report --reporter=lcov",
     "start": "node ./bin/www"
@@ -29,6 +30,7 @@
     "mocha": "^3.2.0",
     "mocha-text-cov": "^0.1.1",
     "nyc": "^10.1.2",
+    "pre-commit": "^1.2.2",
     "sinon": "^1.17.7",
     "travis-cov": "^0.2.5"
   },
@@ -37,10 +39,14 @@
     "lines": 99,
     "statements": 99,
     "functions": 99,
-    "branches": 60,
+    "branches": 99,
     "reporter": [
       "lcov"
     ],
     "check-coverage": true
-  }
+  },
+  "pre-commit":[
+    "updatePrecommitMessage",
+    "test"
+  ]
 }
