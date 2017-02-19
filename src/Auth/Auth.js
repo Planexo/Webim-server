@@ -9,17 +9,17 @@ var Auth = function(Constantes){
 	
 	var self = {};
 
-	Auth.kind = {
+	self.kind = {
 		NONE: 0,
 		HTTP : 1,
 		COOKIES : 2,
 		OAUTH2 : 3,
 		QUERY : 4,
-
-	}
+		APIKEY : 5
+	};
 
 	//cette valeur est modifiable
-	self.method = Auth.kind.NONE;
+	self.method = self.kind.NONE;
 
 	if(typeof Auth.authentified == 'undefined'){
 		Auth.authentified = {
@@ -29,6 +29,9 @@ var Auth = function(Constantes){
 		};
 	}
 
+	/**
+	*	Permet d'authentifier une requete
+	*/
 	self.authentify = function (req, res, next){
 
 		let reason = {text:''};
@@ -37,28 +40,36 @@ var Auth = function(Constantes){
 		Auth.authentified.method = self.method;
 
 		switch (self.method) {
-			case Auth.kind.HTTP:
+			case self.kind.HTTP:
 				http(req,res,reason);				
 				break;
-			case Auth.kind.COOKIES:
+			case self.kind.COOKIES:
 				cookies(req,res,reason);
 				break;
-			case Auth.kind.OAUTH2:
+			case self.kind.OAUTH2:
 				oauth2(req,res,reason);
 				break;
-			case Auth.kind.QUERY:
+			case self.kind.QUERY:
 				query(req,res,reason); 
+				break;
+			case self.kind.APIKEY:
+				apikey(req,res,reason); 
 				break;
 			default: 
 				Auth.authentified.is = true; 
 				break;
 		}
 		 
-		if(Auth.authentified.is){			
+		if(Auth.authentified.is){  	
 			next();
 		}else{
-			res.status(401) ;
-  			res.json({error:"The authentification failed : "+reason.text});
+			try {
+				res.status(401) ;
+				res.json({error:"The authentification failed : "+reason.text});
+			} catch(e) {
+				//pour les tests
+				res.status = 401 ; 
+			}			
 		}
 	}
 
@@ -80,6 +91,16 @@ var Auth = function(Constantes){
 	};
 
 	var oauth2 = function (req,res,reason) {
+		Auth.authentified.is = true;
+		//console.log("Authentified with oauth2 and apikey : "+Constantes.API_KEY);
+	};
+
+	var query = function (req,res,reason) {
+		Auth.authentified.is = true;
+		//console.log("Authentified with query")
+	};
+
+	var apikey = function (req,res,reason) {
 		if(typeof req.headers.apikey == 'undefined'){
 			reason.text = "The header 'apikey' is missing";
 			return;
@@ -94,17 +115,11 @@ var Auth = function(Constantes){
 		Auth.authentified.data = {
 			apikey:req.headers.apikey
 		};
-
-		//console.log("Authentified with oauth2 and apikey : "+Constantes.API_KEY);
-	};
-
-	var query = function (req,res,reason) {
-		Auth.authentified.is = true;
-		//console.log("Authentified with query")
+		//console.log("Authentified with apikey")
 	};
 
 	return self;
 
 };
-
-module.exports = Auth;
+ 
+module.exports = Auth; 

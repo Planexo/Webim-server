@@ -11,6 +11,8 @@ var helmet = require('helmet');
 var core = require('./src/Core'); 
 var app = express();
 
+var colors = require('colors');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -31,7 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 (new core(app)).run();  
 
 app.listen(8000,function(){
-	console.log("Application started ...");
+	console.log("Application started ...".yellow);
 })
 
 module.exports = app;

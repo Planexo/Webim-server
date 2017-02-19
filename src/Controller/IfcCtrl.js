@@ -3,11 +3,13 @@
 var bimapi = require('../Bim/Api')();
 var fs = require('fs');
 
+var colors = require('colors');
+
 var IfcCtrl = function(Auth){
 	var self = {};
 
 	self.get = function(req, res, next){
-		console.log("getting ifc")  ;
+		console.log("getting ifc".cyan)  ;
 
 		var file = req.params.file; 
 		var fullfile = './data/'+file; 
@@ -30,7 +32,7 @@ var IfcCtrl = function(Auth){
 	}
 
 	self.getAll = function(req, res, next){
-		console.log("getting all ifc files")  
+		console.log("getting all ifc files".cyan)  
 		res.json({data:'ifc files'});
 	}
 	

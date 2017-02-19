@@ -1,6 +1,6 @@
-var Auth = require('./Auth/Auth'); 
-var Constantes = require('./Constantes'); 
 var Router = require('./Routing/Router');
+var Constantes = require('./Constantes'); 
+var Auth = require('./Auth/Auth')(Constantes); 
 
 var Core = function(Application){
 	var self = {};
@@ -29,9 +29,8 @@ var Core = function(Application){
 
 		//Authentification
 		//-------------------------------------------------------------------------
-		//Auth.method = Auth.kind.QUERY; 
 		if(Application) 
-			Application.use(Auth(Constantes).authentify);
+			Application.use(Auth.authentify);
 		
 		//Route 
 		//-------------------------------------------------------------------------
