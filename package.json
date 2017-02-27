@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "updatePrecommitMessage":"bin/updatePrecommitMessage.sh",
+    "updatePrecommitMessage":"chmod +x bin/updatePrecommitMessage.sh; bin/updatePrecommitMessage.sh",
     "test": "nyc mocha src/* ",
     "coverage": "nyc report --reporter=lcov",
     "start": "node ./bin/www"
@@ -39,7 +39,7 @@
     "lines": 99,
     "statements": 99,
     "functions": 99,
-    "branches": 90,
+    "branches": 70,
     "reporter": [
       "lcov"
     ],

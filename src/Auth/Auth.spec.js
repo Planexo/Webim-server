@@ -9,15 +9,15 @@ const expect = chai.expect
 
 chai.use(chaiHttp);
 
-const apipath = constantes.API_RESTPATH;
-
+const apipath = constantes.api.path;
+const apikey = constantes.api.key;
 
 describe('Authentify user without checking anything', function () {
 	it('does not check the user',function (done) { 
 		chai.request(server)
             .get(apipath+'/ifc/1.ifc') 
-            .set('apikey',constantes.API_KEY)  
-            .end(( err,res) => {  
+            .set('apikey',apikey)  
+            .end(( err,res) => {
 
             	res.req.headers = res.req._headers;
 
@@ -36,7 +36,7 @@ describe('Authentify user with http verification', function () {
 	it('authentifies user ',function (done) {  
 		chai.request(server)
             .get(apipath+'/ifc/1.ifc') 
-            .set('apikey',constantes.API_KEY)  
+            .set('apikey',apikey)  
             .end(( err,res) => {  
 
             	res.req.headers = res.req._headers;
@@ -57,7 +57,7 @@ describe('Authentify user with cookies verification', function () {
 	it('authentifies user ',function (done) {  
 		chai.request(server)
             .get(apipath+'/ifc/1.ifc') 
-            .set('apikey',constantes.API_KEY)  
+            .set('apikey',apikey)  
             .end(( err,res) => {  
 
             	res.req.headers = res.req._headers;
@@ -78,7 +78,7 @@ describe('Authentify user with OAUTH2 verification', function () {
 	it('authentifies user',function (done) {  
 		chai.request(server)
             .get(apipath+'/ifc/1.ifc') 
-            .set('apikey',constantes.API_KEY)  
+            .set('apikey',apikey)  
             .end(( err,res) => {  
 
             	res.req.headers = res.req._headers;
@@ -99,7 +99,7 @@ describe('Authentify user with query verification', function () {
 	it('authentifies user ',function (done) {  
 		chai.request(server)
             .get(apipath+'/ifc/1.ifc') 
-            .set('apikey',constantes.API_KEY)  
+            .set('apikey',apikey)  
             .end(( err,res) => {  
 
             	res.req.headers = res.req._headers;
@@ -120,7 +120,7 @@ describe('Authentify user with apikey verification', function () {
 	it('authentifies user if apikey is correct',function (done) {  
 		chai.request(server)
             .get(apipath+'/ifc/1.ifc') 
-            .set('apikey',constantes.API_KEY)  
+            .set('apikey',apikey)  
             .end(( err,res) => {  
 
             	res.req.headers = res.req._headers;

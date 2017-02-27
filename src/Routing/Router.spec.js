@@ -9,19 +9,20 @@ const expect = chai.expect
 
 chai.use(chaiHttp);
 
-const apipath = constantes.API_RESTPATH;
+const apipath = constantes.api.path;
 
 var req = { 
 	headers:{
-		'apikey':constantes.API_KEY
+		'apikey':constantes.api.key
 	}
 };
 describe('Testing Router', function () {
 	it('checks root path',function (done) {
 	
 		chai.request(server)
-            .get(apipath+'/')  
-            .end(( err,res) => {   
+            .get(apipath+'/')
+            .set('apikey',req.headers.apikey)
+            .end(( err,res) => {
 
             	expect(res.status).to.equal(200);  				
 

@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-/* root */
+/**
+ * Racine de l'application
+ */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
@@ -9,7 +11,7 @@ router.get('/', function(req, res, next) {
 /*
 	IFC
 --------------------------------------------------------------------
-*/ 
+*/
 var IfcCtrl = require('../Controller/IfcCtrl')();
 
 var base = '/ifc';
@@ -26,6 +28,7 @@ router.post(base, IfcCtrl.post);
 	OBJ
 --------------------------------------------------------------------
 */
+//TODO
 //var ObjCtrl = require('../src/Controller/ObjCtrl');
 
 //base = '/obj';
@@ -37,6 +40,7 @@ router.post(base, IfcCtrl.post);
 	MTL
 --------------------------------------------------------------------
 */
+//TODO
 //var MtlCtrl = require('../src/Controller/MtlCtrl');
 
 //base = '/mtl';

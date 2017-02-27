@@ -1,52 +1,61 @@
+'use strict';
+
 var Router = require('./Routing/Router');
 var Constantes = require('./Constantes'); 
-var Auth = require('./Auth/Auth')(Constantes); 
+var Auth = require('./Auth/Auth')(Constantes);
 
+/**
+ * Cette classe est le coeur de l'application.
+ * @param Application : l'application utilisée, ici c'est le module express
+ * @returns {{}}
+ * @constructor
+ */
 var Core = function(Application){
 	var self = {};
 
-	if(typeof Core.config == 'undefined'){
-		Core.config = {
-			db:null
-		};
-	}
-
-	self.setDB = function (value) {		
-		Core.config.db = value; 
-	};
-	self.getDB = function () {		
-		return Core.config.db;
-	}
-
-	self.run = function () { 
-		//Authorization 
-		//-------------------------------------------------------------------------
+    /**
+     * Cette fonction enregistre tous nos middlewares (auth, router, ...) dans l'appication
+     * @returns {boolean}
+     */
+	self.run = function () {
+        /**
+         * Authorization
+         * Ce middleware indique à express que les requetes peuvent provenir de n'importe où
+         */
 		Application.use(function(req, res, next) {
 			res.header("Access-Control-Allow-Origin", "*");
     		res.header("Access-Control-Allow-Headers", "X-Requested-With");
     		next();
     	});
 
-		//Authentification
-		//-------------------------------------------------------------------------
+        /**
+         * Authentification
+         * Toutes les requetes passent par notre module d'authentification
+         */
+        Auth.method = Auth.kind.APIKEY;
 		Application.use(Auth.authentify);
-		
-		//Route 
-		//-------------------------------------------------------------------------
-		Application.use('/', Router);
-		Application.use(Constantes.API_RESTPATH, Router);
-		
 
-		//404 : catch 404 and forward to error handler
-		//------------------------------------------------------------------------- 
+        /**
+         * Route
+         * Seules les routes commençant par '/' ou par la valeur de  API_RESTPATH sont acceptées par notre router
+         */
+		Application.use('/', Router);
+		Application.use(Constantes.api.path, Router);
+
+        /**
+         * 404 : catch 404 and forward to error handler
+         * Les routes qui ne sont pas acceptées, atterissent ici
+         */
 		Application.use(function(req, res, next) {
 			var err = new Error('Route Not Found');
 			err.status = 404;
 			next(err);
 		});
 
-		// error handler
-		//-------------------------------------------------------------------------
+        /**
+         * error handler
+         * En cas d'erreur, ce middleware s'exécute
+         */
 		Application.use(function(err, req, res, next) {
 			// set locals, only providing error in development
 			res.locals.message = err.message;
@@ -57,6 +66,7 @@ var Core = function(Application){
 			res.json({'error':err.message});
 		});
 
+		//pour faciliter le test de la fonction, on renvoie true si tous les middlewares ont été ajoutés
 		return true;
 	} 
 

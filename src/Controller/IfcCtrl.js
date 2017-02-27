@@ -5,9 +5,20 @@ var fs = require('fs');
 
 var colors = require('colors');
 
+/**
+ * Cette classe fait office de controleur pour tout ce qui concerne directment les fichiers ifc
+ * @returns {{}}
+ * @constructor
+ */
 var IfcCtrl = function(){
 	var self = {};
 
+    /**
+	 * Cette fonction renvoie le fichier ifc demandé
+     * @param req
+     * @param res
+     * @param next
+     */
 	self.get = function(req, res, next){
 		console.log("getting ifc".cyan)  ;
 
@@ -19,6 +30,12 @@ var IfcCtrl = function(){
 		res.json({ifc:ifc}); 
 	}
 
+    /**
+     * Cette fonction renvoie les parties mtl et obj du fichier ifc demandé
+     * @param req
+     * @param res
+     * @param next
+     */
 	self.getParts = function(req, res, next){
 		console.log("getting parts of ifc".cyan)  ;
 
@@ -31,14 +48,23 @@ var IfcCtrl = function(){
 		res.json({obj:obj,mtl:mtl});
 	}
 
+    /**
+     * Cette fonction renvoie tous les fichiers ifc du répertoire demandé
+     * @param req
+     * @param res
+     * @param next
+     */
 	self.getAll = function(req, res, next){
 		console.log("getting all ifc files".cyan)  
 		res.json({data:'ifc files'});
 	}
-	
-	/**
-	*	Récupère le fichier ifc et le convertit en mtl
-	*/
+
+    /**
+     * Cette fonction renvoie la partie mtl fichier ifc demandé
+     * @param req
+     * @param res
+     * @param next
+     */
 	self.getMtl = function(req, res, next){
 		console.log("getting mtl from ifc".cyan) 
 
@@ -54,6 +80,12 @@ var IfcCtrl = function(){
 
 	}
 
+    /**
+     * Cette fonction renvoie la partie obj du fichier ifc demandé
+     * @param req
+     * @param res
+     * @param next
+     */
 	self.getObj = function(req, res, next){
 		console.log("getting obj from ifc".cyan)  
 		
@@ -68,6 +100,12 @@ var IfcCtrl = function(){
 		res.json({obj: content});
 	}
 
+    /**
+     * Cette fonction sauvegarde le fichier ifc recu
+     * @param req
+     * @param res
+     * @param next
+     */
 	self.post = function (req, res, next) {
 		console.log("posting ifc".cyan)
 

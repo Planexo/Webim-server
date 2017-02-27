@@ -3,18 +3,17 @@ const constantes = require('../Constantes');
 const auth = require('../Auth/Auth')(constantes);
 const IfcCtrl = require('./IfcCtrl')(auth);
 
-
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const expect = chai.expect
 
 chai.use(chaiHttp);
 
-const apipath = constantes.API_RESTPATH;
+const apipath = constantes.api.path;
 
 var req = { 
 	headers:{
-		'apikey':constantes.API_KEY
+        apikey:constantes.api.key
 	},
 	params:{
 		file:'1.ifc',
@@ -27,7 +26,8 @@ describe('Testing Ifc Controller', function () {
 	it('checks get function',function (done) {
 	
 		chai.request(server)
-            .get(apipath+'/ifc/'+req.params.file)  
+            .get(apipath+'/ifc/'+req.params.file)
+            .set('apikey',req.headers.apikey)
             .end(( err,res) => {   
 
             	expect(res.status).to.equal(200);   
@@ -44,7 +44,8 @@ describe('Testing Ifc Controller', function () {
 	it('checks getParts function',function (done) {
 	
 		chai.request(server)
-            .get(apipath+'/ifc/parts/'+req.params.file)  
+            .get(apipath+'/ifc/parts/'+req.params.file)
+            .set('apikey',req.headers.apikey)
             .end(( err,res) => {   
 
             	expect(res.status).to.equal(200);   
@@ -62,7 +63,8 @@ describe('Testing Ifc Controller', function () {
 	it('checks getAll function',function (done) {
 	
 		chai.request(server)
-            .get(apipath+'/ifc/files/'+req.params.file)  
+            .get(apipath+'/ifc/files/'+req.params.file)
+            .set('apikey',req.headers.apikey)
             .end(( err,res) => {   
 
             	expect(res.status).to.equal(200);   
@@ -79,7 +81,8 @@ describe('Testing Ifc Controller', function () {
 	it('checks getMtl function',function (done) {
 	
 		chai.request(server)
-            .get(apipath+'/ifc/mtl/'+req.params.mtlfile)  
+            .get(apipath+'/ifc/mtl/'+req.params.mtlfile)
+            .set('apikey',req.headers.apikey)
             .end(( err,res) => {   
 
             	expect(res.status).to.equal(200);   
@@ -94,10 +97,11 @@ describe('Testing Ifc Controller', function () {
             }); 
 	})
 	it('checks getObj function',function (done) {
-	
-		chai.request(server)
-            .get(apipath+'/ifc/obj/'+req.params.objfile)  
-            .end(( err,res) => {   
+
+            chai.request(server)
+            .get(apipath+'/ifc/obj/'+req.params.objfile)
+            .set('apikey',req.headers.apikey)
+            .end(( err,res) => {
 
             	expect(res.status).to.equal(200);   
 
@@ -111,9 +115,10 @@ describe('Testing Ifc Controller', function () {
             }); 
 	})
 	it('checks post function',function (done) {
-	
+
 		chai.request(server)
-            .post(apipath+'/ifc')  
+            .post(apipath+'/ifc')
+            .set('apikey',req.headers.apikey)
             .end(( err,res) => {   
 
             	expect(res.status).to.equal(200);   
