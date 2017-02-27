@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "updatePrecommitMessage":"chmod +x bin/updatePrecommitMessage.sh; bin/updatePrecommitMessage.sh",
+    "updatePrecommitMessage": "chmod +x bin/updatePrecommitMessage.sh; bin/updatePrecommitMessage.sh",
     "test": "nyc mocha src/* ",
     "coverage": "nyc report --reporter=lcov",
     "start": "node ./bin/www"
@@ -27,6 +27,7 @@
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
     "colors": "^1.1.2",
+    "cors": "^2.8.1",
     "mocha": "^3.2.0",
     "mocha-text-cov": "^0.1.1",
     "nyc": "^10.1.2",
@@ -45,7 +46,7 @@
     ],
     "check-coverage": true
   },
-  "pre-commit":[
+  "pre-commit": [
     "updatePrecommitMessage",
     "test"
   ]

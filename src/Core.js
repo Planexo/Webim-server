@@ -1,5 +1,7 @@
 'use strict';
 
+var cors = require('cors');
+
 var Router = require('./Routing/Router');
 var Constantes = require('./Constantes'); 
 var Auth = require('./Auth/Auth')(Constantes);
@@ -20,13 +22,9 @@ var Core = function(Application){
 	self.run = function () {
         /**
          * Authorization
-         * Ce middleware indique à express que les requetes peuvent provenir de n'importe où
+         * Ce middleware indique à express qu'on accepte les CORS (Cross Origin Request)
          */
-		Application.use(function(req, res, next) {
-			res.header("Access-Control-Allow-Origin", "*");
-    		res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    		next();
-    	});
+		Application.use(cors());
 
         /**
          * Authentification
