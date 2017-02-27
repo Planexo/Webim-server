@@ -62,8 +62,6 @@ var Auth = function(Constantes){
      * @param next
      */
 	self.authentify = function (req, res, next){
-	    console.log("TRYING TO AUTH");
-	    console.log(req.headers);
 
 	    //Le text à renvoyer en cas d'échec d'authentification
 		var reason = {text:''};
@@ -86,14 +84,12 @@ var Auth = function(Constantes){
 				query(req,res,reason); 
 				break;
 			case self.kind.APIKEY:
-				apikey(req,res,reason);  console.log("WITH APIKEY");
+				apikey(req,res,reason);
 				break;
 			default: 
 				Auth.authentified.is = true; 
 				break;
 		}
-        console.log(Auth.authentified);
-        console.log(reason.text);
 
 		if(Auth.authentified.is){  	
 			next();
@@ -162,7 +158,7 @@ var Auth = function(Constantes){
      * @param reason
      */
 	var apikey = function (req,res,reason) {
-		if(typeof req.headers.apikey == 'undefined'){ console.log(req.headers.apikey);
+		if(typeof req.headers.apikey == 'undefined'){
 			reason.text = "The header 'apikey' is missing";
 			return;
 		}
@@ -176,7 +172,7 @@ var Auth = function(Constantes){
 		Auth.authentified.data = {
 			apikey:req.headers.apikey
 		};
-		console.log("Authentified with apikey")
+		//console.log("Authentified with apikey")
 	};
 
 	return self;
