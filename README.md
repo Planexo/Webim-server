@@ -6,7 +6,7 @@ Implementation du serveur
 # Installation 
 
 ```
-cd Webim-server/app
+cd Webim-server
 npm install
 npm start
 
