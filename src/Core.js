@@ -5,6 +5,7 @@ var cors = require('cors');
 var Router = require('./Routing/Router');
 var Constantes = require('./Constantes'); 
 var Auth = require('./Auth/Auth')(Constantes);
+var Cache = require('./Cache/Cache');
 
 /**
  * Cette classe est le coeur de l'application.
@@ -20,6 +21,13 @@ var Core = function(Application){
      * @returns {boolean}
      */
 	self.run = function () {
+        /**
+		 * Au lancement de l'application, on supprime le cache
+         */
+		var cache = new Cache();
+		cache.clear();
+		cache.save();
+
         /**
          * Authorization
          * Ce middleware indique à express qu'on accepte les CORS (Cross Origin Request)
