@@ -19,7 +19,7 @@ var Constantes = (function () {
      * @type {{}}
      */
     self.paths = {
-        data : '/data/'
+        data : './data/'
     };
 
     /**

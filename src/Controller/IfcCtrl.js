@@ -1,8 +1,9 @@
 'use strict';
 
 var bimapi = require('../Bim/Api')();
-var fs = require('fs');
+var Constantes = require('../Constantes');
 
+var fs = require('fs');
 var colors = require('colors');
 
 /**
@@ -23,7 +24,7 @@ var IfcCtrl = function(){
 		console.log("getting ifc".cyan)  ;
 
 		var file = req.params.file; 
-		var fullfile = './data/'+file; 
+		var fullfile = Constantes.paths.data+file;
  
 		var ifc = fs.readFileSync(fullfile, 'utf8');
 
@@ -40,12 +41,32 @@ var IfcCtrl = function(){
 		console.log("getting parts of ifc".cyan)  ;
 
 		var file = req.params.file; 
-		var fullfile = './data/'+file; 
- 
-		var mtl = fs.readFileSync(fullfile+'.mtl', 'utf8'); 
-		var obj = fs.readFileSync(fullfile+'.obj', 'utf8'); 
+		var fullfile = Constantes.paths.data+file;
 
-		res.json({obj:obj,mtl:mtl});
+        bimapi.IfcToMtlObj(
+            fullfile, /* ifc */
+            fullfile+'.obj', /* fichier obj attendu */
+            function (error, stdout, stderr) {  /* fonction callback */
+
+                if(stderr.length == 0){
+                    console.log("[Bim API :: IfcToMtlObj] transformed ifc to obj".green);
+
+                    var mtl = fs.readFileSync(fullfile+'.mtl', 'utf8');
+                    var obj = fs.readFileSync(fullfile+'.obj', 'utf8');
+
+                    //on renvoie la réponse
+                    res.json({obj:obj,mtl:mtl});
+                }else{
+                    console.log("[Bim API :: IfcToMtlObj] failed to transform ifc to obj".red);
+
+                    // 520 = Http Unknown Error
+                    res.status(520);
+
+                    //on renvoie l'erreur
+                    res.json({error:error,stderr:stderr});
+                }
+            }
+        );
 	}
 
     /**

@@ -1,3 +1,10 @@
+'use strict';
+
+var exec = require('child_process').exec;
+var spawn = require('child_process').spawnSync;
+
+var Constantes = require('../Constantes');
+
 /**
  * Cette classe fait office d'interface entre l'application et les outils BIM
  * @returns {{}}
@@ -8,14 +15,38 @@ var BimApi = function () {
 	var self = {};
 
     /**
+     * Liste des exécutables
+     * @type {{ifcObj: string, ifcConvert: string}}
+     */
+	var executables = {
+	    ifcObj: "bin/IfcObj",
+	    ifcConvert: "bin/IfcConvert"
+    }
+
+    /**
      * Exemple : R2cupère les parties obj et mtl d'un fichier ifc
      * @param ifc
-     * @param outdir
-     * @returns {{mtl: string, obj: string}}
+     * @param outfile
+     * @param callback : La fonction à appeler quand la commande s'est exécutée
+     * @returns {boolean}
      * @constructor
      */
-	self.IfcToMtlObj = function (ifc, outdir) {
-		return {mtl:'to complete', obj:'to complete'}; 
+	self.IfcToMtlObj = function (ifc, outfile, callback) {
+	    //si la fonction callback n'est pas défini par l'appelant, on retourne false
+        if(callback == null)
+            return false;
+
+        //la commande IfcOpenShell
+	    var cmd = executables.ifcConvert ;
+	    var args = [ifc, outfile];
+
+	    //Permet de voir quelle commande a été exécutée (regarder la console Server :p )
+        console.log('EXEC : ' + cmd)
+
+        var ret = spawn(cmd,args);
+        callback(ret.error, ret.stdout, ret.stderr);
+
+        return true;
 	}
     /**
      * Exemple
