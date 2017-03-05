@@ -4,7 +4,8 @@ var fs = require('fs');
 var util = require('util');
 
 /**
- * Classe permettant de gérer le cache
+ * Classe permettant de gérer le cache.
+ * On définit le cache comme un objet permettant de stocker
  * @param Constantes
  * @returns {{}}
  */
@@ -21,6 +22,9 @@ var cache = function (Constantes) {
      * @type {number}
      */
     var DEFAULT_EXPIRATION = 86400;
+    self.defaultExpiration = function () {
+        return DEFAULT_EXPIRATION;
+    };
 
     /**
      * Variable statique pour gérer le contenu du store
@@ -70,7 +74,7 @@ var cache = function (Constantes) {
      * @returns {Array}
      */
     self.keys = function () {
-        return Object.keys(cache.content) || [];
+        return Object.keys(cache.content);
     };
 
     /**
@@ -126,6 +130,23 @@ var cache = function (Constantes) {
         return cacheItem;
     };
 
+    self.getIfRecent = function (key, callback) {
+        var isrecent = self.isRecent(key);
+        var error = '';
+        if(isrecent == false) {
+            error = "Item not recent";
+            if(callback)
+                callback(error, key, null, isrecent);
+            return null;
+        }
+
+        var cacheItem = cache.content[key];
+        if(callback)
+            callback(error, key, cacheItem, isrecent);
+
+        return cacheItem;
+    };
+
     /**
      * récupère plusieurs items du cache par leurs clés
      * @param keys
@@ -174,18 +195,40 @@ var cache = function (Constantes) {
     };
 
     /**
+     * Vérifie l'intégrité des données du cache <=> pour l'instant, on ne regarde que l'existence des fichiers
+     * Cette fonction ne vérifie pas l'existence de la clé car isRecent() le fait déjà
+     * @param key
+     */
+    var isComplete = function (key) {
+        var cacheItem = cache.content[key];
+
+        for(var i in cacheItem.s){
+            var file = cacheItem.s[i];
+
+            //Si le fichier n'existe pas, le cache n'est pas à jour
+            if( ! fs.existsSync(file))
+                return false;
+        }
+
+        return true;
+    };
+
+    /**
      * Vérifie si l'item pointé par la clé est encore récent
      * @param key
      * @returns {boolean}
      */
     self.isRecent = function (key) {
         var cacheItem = cache.content[key];
+
         if(cacheItem == undefined)
+            return false;
+
+        if( ! isComplete(key))
             return false;
 
         if(cacheItem.pk == 'u'){
             // comparer la date des fichiers à la date du cache
-            var isrecent = true;
 
             for(var i in cacheItem.s){
                 var file = cacheItem.s[i]; // console.log(file);
@@ -198,6 +241,7 @@ var cache = function (Constantes) {
             }
         }
         else if(cacheItem.pk == 't'){
+
             if( (cacheItem.d+cacheItem.pv) < (new Date().getTime()) ){
                 return false;
             }

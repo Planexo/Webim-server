@@ -35,6 +35,17 @@ describe('Testing Cache system ', function () {
 
         expect(cache.get("key")).to.equal(cacheitem);
 
+        //la clé 'key' existe
+        cache.getIfRecent("key",function (error, key, item,isrecent) {
+            expect(isrecent).to.equal(true);
+        });
+        //la clé 'key45' n'existe pas
+        cache.getIfRecent("key45",function (error, key, item,isrecent) {
+            expect(isrecent).to.equal(false);
+        });
+
+        expect(cache.get("key")).to.equal(cacheitem);
+
         cache.set("key2",['n'],[testdata.ifc, testdata.obj]);
 
         cache.mget(["key","key2"],function (error, key, item) {
@@ -55,6 +66,11 @@ describe('Testing Cache system ', function () {
         // la clé 'key2' utilise la politique 'n' => pas d'expiration. Donc la clé est toujours récente
         expect(cache.isRecent("key2")).to.equal(true);
 
+        // DEFAULT_EXPIRATION
+        cache.set("key3",['t'],[testdata.ifc, testdata.obj]);
+
+        expect(cache.get("key3").pv).to.equal(1000*cache.defaultExpiration());
+
         cache.set("key3",['u'],[testdata.ifc, testdata.obj]);
 
         expect(cache.isRecent("key3")).to.equal(true);
@@ -62,6 +78,18 @@ describe('Testing Cache system ', function () {
         cache.set("key3",['t',1],[testdata.ifc, testdata.obj]);
 
         expect(cache.isRecent("key3")).to.equal(true);
+
+        //la clé n'est plus à jour
+        Cache.content.key3.d = 0;
+        expect(cache.isRecent("key3")).to.equal(false);
+
+        cache.set("key3",['t',1],[testdata.ifc, testdata.obj]);
+
+        //Ajout d'un faux fichier. IsRecent renvoie false car isComplete échoue (le fichier n'existe pas)
+        Cache.content.key3.s.push('fakefile');
+        expect(cache.isRecent("key3")).to.equal(false);
+
+        cache.set("key3",['t',1],[testdata.ifc, testdata.obj]);
 
         cache.evaluate(["key","key3"],function (key,isrecent) {
             if(key=="key")

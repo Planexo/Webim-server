@@ -1,7 +1,7 @@
 'use strict';
 
-var exec = require('child_process').exec;
 var spawn = require('child_process').spawnSync;
+var fs = require('fs');
 
 var Constantes = require('../Constantes');
 
@@ -21,7 +21,7 @@ var BimApi = function () {
 	var executables = {
 	    ifcObj: "bin/IfcObj",
 	    ifcConvert: "bin/IfcConvert"
-    }
+    };
 
     /**
      * Exemple : R2cupère les parties obj et mtl d'un fichier ifc
@@ -40,6 +40,15 @@ var BimApi = function () {
 	    var cmd = executables.ifcConvert ;
 	    var args = [ifc, outfile];
 
+	    if( ! fs.existsSync(ifc)){
+	        try{
+	            throw new ("Le fichier demandé n'existe pas.");
+            }catch (e){
+                callback(e,undefined,e.message);
+            }
+            return false;
+        }
+
 	    //Permet de voir quelle commande a été exécutée (regarder la console Server :p )
         console.log('EXEC : ' + cmd)
 
@@ -47,7 +56,7 @@ var BimApi = function () {
         callback(ret.error, ret.stdout, ret.stderr);
 
         return true;
-	}
+	};
     /**
      * Exemple
      * @param ifc
@@ -57,7 +66,7 @@ var BimApi = function () {
      */
 	self.IfcToMtl = function (ifc, outdir) {
 		return {mtl:'to complete'}; 
-	}
+	};
     /**
      * Exemple
      * @param ifc

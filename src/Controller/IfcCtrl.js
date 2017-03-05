@@ -2,6 +2,7 @@
 
 var bimapi = require('../Bim/Api')();
 var Constantes = require('../Constantes');
+var cache = require('../Cache/Cache')();
 
 var fs = require('fs');
 var colors = require('colors');
@@ -43,6 +44,20 @@ var IfcCtrl = function(){
 		var file = req.params.file; 
 		var fullfile = Constantes.paths.data+file;
 
+		var cacheName = 'getPartsof'+fullfile;
+
+		//On vérifie si ce cache existe et s'il est à jour. Si oui, on renvoie directement les fichiers demandés
+        if( cache.getIfRecent(cacheName) ){
+            console.log('Generated with cache system');
+
+            var mtl = fs.readFileSync(fullfile+'.mtl', 'utf8');
+            var obj = fs.readFileSync(fullfile+'.obj', 'utf8');
+
+            res.json({obj:obj,mtl:mtl});
+            return;
+        }
+
+
         bimapi.IfcToMtlObj(
             fullfile, /* ifc */
             fullfile+'.obj', /* fichier obj attendu */
@@ -53,6 +68,15 @@ var IfcCtrl = function(){
 
                     var mtl = fs.readFileSync(fullfile+'.mtl', 'utf8');
                     var obj = fs.readFileSync(fullfile+'.obj', 'utf8');
+
+                    //on crée une entrée dans le cache avec la clé 'cachename'
+                    cache.set(cacheName,['u'],
+                        [
+                            fullfile+'.mtl',
+                            fullfile+'.obj'
+                        ]);
+                    //on sauvegarde cette liste de fichiers dans le cache avec la clé 'cachename'
+                    cache.save();
 
                     //on renvoie la réponse
                     res.json({obj:obj,mtl:mtl});
