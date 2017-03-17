@@ -64,7 +64,7 @@ var BimApi = function () {
         }
 
         callback(ret.error, ret.stdout, ret.stderr);
-
+ 
         return true;
 	};
     /**
