@@ -5,6 +5,8 @@ var fs = require('fs');
 
 var Constantes = require('../Constantes');
 
+var isWindows = /^win/.test(process.platform);
+
 /**
  * Cette classe fait office d'interface entre l'application et les outils BIM
  * @returns {{}}
@@ -19,8 +21,8 @@ var BimApi = function () {
      * @type {{ifcObj: string, ifcConvert: string}}
      */
 	var executables = {
-	    ifcObj: "bin/IfcObj",
-	    ifcConvert: "bin/IfcConvert"
+	    ifcObj: isWindows ? "" : "bin/IfcObj",
+	    ifcConvert: isWindows ? "bin\\IfcConvert.exe" : "bin/IfcConvert"
     };
 
     /**
@@ -52,7 +54,15 @@ var BimApi = function () {
 	    //Permet de voir quelle commande a été exécutée (regarder la console Server :p )
         console.log('EXEC : ' + cmd)
 
-        var ret = spawn(cmd,args);
+        var ret ;
+	    if(isWindows){
+	        // Sous windows, on exécute le programme cmd.exe auquel on passe tous les paramètres pour exécuter notre commande
+	        args = ['/c',cmd].concat(args);
+	        ret = spawn(process.env.comspec,args);
+        }else{
+            ret = spawn(cmd,args);
+        }
+
         callback(ret.error, ret.stdout, ret.stderr);
 
         return true;
