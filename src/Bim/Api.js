@@ -39,7 +39,8 @@ var BimApi = function () {
      * @returns {Array}
      */
     self.numberOfParts = function (objSize) {
-        return parseInt(  ((objSize/1000) / vitesseConnexion) / tempsMinimal );
+        var parts =   ((objSize/1000) / vitesseConnexion) / tempsMinimal ;
+        return parseInt( parts );
     };
 
     /**
@@ -123,26 +124,18 @@ var BimApi = function () {
 	self.divideObj = function (objpath, objname, K,  outdir, callback) {
         var size = fs.statSync(objpath+objname).size;
 
-        console.log("size : " + size);
-
         if( ! K){
             K = self.numberOfParts(size);
-            console.log("K = "+K);
         }
 
         //Si la connexion peut supporter un objet entier, pas besoin de le découper
 
         var ret = spawn(executables.objCuter,[objpath, objname, K, outdir]);
-        if(K < 2){
-            return 1;
-        }
 
         if(callback)
             callback(ret.error, ret.stdout, ret.stderr);
 
-        console.log(ret.stdout);
-
-        return K;
+        return K >= 2 ? K : 1;
 	};
 
 	return self;

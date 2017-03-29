@@ -33,9 +33,7 @@ router.post(base, IfcCtrl.post);
 var ObjCtrl = require('../Controller/ObjCtrl')();
 
 base = '/obj';
-router.get(base+'/:file/parts', ObjCtrl.getParts);
-router.get(base+'/:file/part/:index', ObjCtrl.getPart);
-//router.get(base+'/:file', ObjCtrl.getObj);
+router.get(base+'/:file/part/:index', ObjCtrl.getPart); 
 
 
 /*

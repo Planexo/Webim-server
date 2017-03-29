@@ -115,31 +115,41 @@ var IfcCtrl = function(){
             if( ! fs.existsSync(ifcfile)){
                 res.json({infos:null,mtl:mtl});
             }else{
-                console.log("Génération de l'objet en cours ...");
+                console.log("Génération de l'objet en cours ...".cyan);
 
                 var directory = ifcfile+'.objd/';
                 if( ! fs.existsSync(directory) ){
                     fs.mkdirSync(directory);
                 }
 
-                //res.status(520);
+                //on renvoie la réponse avant la découpe
                 res.json({infos:null,mtl:mtl});
 
+                //Découpe
                 var K = 0;
-                bimapi.divideObj(Constantes.paths.data, file, K, directory);
+                K = bimapi.divideObj(Constantes.paths.data, file+'.obj', K, directory);
+
+                // Si le fichier ne peut pas être découpé, on génère un global.json à la volée
+                if( K <2){
+                    var global = {
+                        repertoire: directory,
+                        parts:[{
+                            filename: file+'.obj'
+                        }]
+                    };
+
+                    try{
+                        fs.writeFileSync(globalfile, JSON.stringify(global), 'utf8');
+                    }catch(e){
+                        return;
+                    }
+                }
             }
 
         }else{
 
-            var global = JSON.parse(globalfile);
-
-            if( global.parts.length < 2) {
-                var obj = fs.readFileSync(ifcfile+'.obj', 'utf8');
-                res.json({obj:obj,mtl:mtl});
-            }else {
-                var infos = fs.readFileSync(globalfile, 'utf8');
-                res.json({infos:infos,mtl:mtl});
-            }
+            var infos = fs.readFileSync(globalfile, 'utf8');
+            res.json({infos:infos,mtl:mtl});
 
         }
     };
