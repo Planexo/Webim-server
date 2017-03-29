@@ -3,6 +3,7 @@
 var bimapi = require('../Bim/Api')();
 var Constantes = require('../Constantes');
 var cache = require('../Cache/Cache')();
+var glob = require("glob")
 
 var fs = require('fs');
 var colors = require('colors');
@@ -127,23 +128,8 @@ var IfcCtrl = function(){
 
                 //Découpe
                 var K = 0;
-                K = bimapi.divideObj(Constantes.paths.data, file+'.obj', K, directory);
+                bimapi.divideObj(Constantes.paths.data, file+'.obj', K, directory);
 
-                // Si le fichier ne peut pas être découpé, on génère un global.json à la volée
-                if( K <2){
-                    var global = {
-                        repertoire: directory,
-                        parts:[{
-                            filename: file+'.obj'
-                        }]
-                    };
-
-                    try{
-                        fs.writeFileSync(globalfile, JSON.stringify(global), 'utf8');
-                    }catch(e){
-                        return;
-                    }
-                }
             }
 
         }else{
@@ -161,8 +147,16 @@ var IfcCtrl = function(){
      * @param next
      */
 	self.getAll = function(req, res, next){
-		console.log("getting all ifc files".cyan)  
-		res.json({data:'ifc files'});
+		console.log("getting all ifc files".cyan)
+
+        var directory = req.params[0];
+		var liste = [];
+
+        glob(Constantes.paths.data+directory+"*.ifc", {}, function (err, files) {
+            liste = files;
+        });
+
+		res.json({data:liste});
 	}
 
     /**

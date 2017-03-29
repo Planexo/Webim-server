@@ -15,9 +15,9 @@ router.get('/', function(req, res, next) {
 var IfcCtrl = require('../Controller/IfcCtrl')();
 
 var base = '/ifc';
+router.get(base+'/files/*', IfcCtrl.getAll);
 router.get(base+'/:file', IfcCtrl.get);
-router.get(base+'/files/:directory', IfcCtrl.getAll);
-router.get(base+'/parts/:file', IfcCtrl.getParts);  
+router.get(base+'/parts/:file', IfcCtrl.getParts);
 router.get(base+'/infos/:file', IfcCtrl.getInfos);
 router.get(base+'/mtl/:file', IfcCtrl.getMtl);
 router.get(base+'/obj/:file', IfcCtrl.getObj); 
@@ -33,7 +33,7 @@ router.post(base, IfcCtrl.post);
 var ObjCtrl = require('../Controller/ObjCtrl')();
 
 base = '/obj';
-router.get(base+'/:file/part/:index', ObjCtrl.getPart); 
+router.get(base+'/:file/part/:index', ObjCtrl.getPart);
 
 
 /*
