@@ -48,7 +48,7 @@ var BimApi = function () {
      * @type {{ifcObj: string, ifcConvert: string}}
      */
 	var executables = {
-        objCuter: "bin/ObjCuter",
+        objCuter: "bin/ObjCuter/cmake-build-debug/ObjCuter",
 	    ifcObj: (isWindows ? "" : "bin/IfcObj"),
 	    ifcConvert: (isWindows ? "bin\\IfcConvert.exe" : "bin/IfcConvert")
     };
