@@ -49,7 +49,7 @@ var BimApi = function () {
 	var executables = {
         objCuter: "bin/ObjCuter"
 	    ifcObj: isWindows ? "" : "bin/IfcObj",
-	    ifcConvert: isWindows ? "bin\\IfcConvert.exe" : "bin/IfcConvert" 
+	    ifcConvert: isWindows ? "bin\\IfcConvert.exe" : "bin/IfcConvert"
     };
 
     /**
