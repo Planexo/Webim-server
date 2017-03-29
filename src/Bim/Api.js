@@ -47,9 +47,9 @@ var BimApi = function () {
      * @type {{ifcObj: string, ifcConvert: string}}
      */
 	var executables = {
-        objCuter: "bin/ObjCuter"
-	    ifcObj: isWindows ? "" : "bin/IfcObj",
-	    ifcConvert: isWindows ? "bin\\IfcConvert.exe" : "bin/IfcConvert"
+        objCuter: "bin/ObjCuter",
+	    ifcObj: (isWindows ? "" : "bin/IfcObj"),
+	    ifcConvert: (isWindows ? "bin\\IfcConvert.exe" : "bin/IfcConvert")
     };
 
     /**

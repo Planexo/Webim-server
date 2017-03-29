@@ -108,11 +108,12 @@ var IfcCtrl = function(){
         var globalfile = Constantes.paths.data + file + '.obj.global.json';
         var mtlfile = Constantes.paths.data + file + '.mtl';
 
+        var mtl = fs.readFileSync(mtlfile, 'utf8');
+
         if( ! fs.existsSync(globalfile)){
 
             if( ! fs.existsSync(ifcfile)){
-                res.status(520);
-                res.json({error: "Le fichier "+file+" n'a pas été déposé. "});
+                res.json({infos:null,mtl:mtl});
             }else{
                 console.log("Génération de l'objet en cours ...");
 
@@ -121,20 +122,19 @@ var IfcCtrl = function(){
                     fs.mkdirSync(directory);
                 }
 
-                res.status(520);
-                res.json({error: "Le fichier n'a pas encore été découpé. La découpe a été lancée. "});
+                //res.status(520);
+                res.json({infos:null,mtl:mtl});
 
                 var K = 0;
                 bimapi.divideObj(Constantes.paths.data, file, K, directory);
             }
 
         }else{
-            var mtl = fs.readFileSync(mtlfile, 'utf8');
 
             var global = JSON.parse(globalfile);
 
             if( global.parts.length < 2) {
-                var obj = fs.readFileSync(ifcfile.'.obj', 'utf8');
+                var obj = fs.readFileSync(ifcfile+'.obj', 'utf8');
                 res.json({obj:obj,mtl:mtl});
             }else {
                 var infos = fs.readFileSync(globalfile, 'utf8');
