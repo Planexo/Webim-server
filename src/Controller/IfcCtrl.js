@@ -63,7 +63,7 @@ var IfcCtrl = function(){
             fullfile+'.obj', /* fichier obj attendu */
             function (error, stdout, stderr) {  /* fonction callback */
 
-                if(stderr.length == 0){
+                if(error == undefined || error == null){
                     console.log("[Bim API :: IfcToMtlObj] transformed ifc to obj".green);
 
                     var mtl = fs.readFileSync(fullfile+'.mtl', 'utf8');
@@ -87,7 +87,7 @@ var IfcCtrl = function(){
                     res.status(520);
 
                     //on renvoie l'erreur
-                    res.json({error:error,stderr:stderr});
+                    res.json({error:"[Bim API :: IfcToMtlObj] failed to transform ifc to obj"});
                 }
             }
         );
