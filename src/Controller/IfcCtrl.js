@@ -165,7 +165,7 @@ var IfcCtrl = function(){
 		console.log("getting mtl from ifc".cyan) 
 
 		var file = req.params.file; 
-		var fullfile = './data/'+file; 
+		var fullfile = './data/'+file+'.mtl';
  
 		var content = fs.readFileSync(fullfile, 'utf8'); 
 
@@ -186,7 +186,7 @@ var IfcCtrl = function(){
 		console.log("getting obj from ifc".cyan)  
 		
 		var file = req.params.file; 
-		var fullfile = './data/'+file;
+		var fullfile = './data/'+file+'.obj';
 
 		var content = fs.readFileSync(fullfile, 'utf8');
 

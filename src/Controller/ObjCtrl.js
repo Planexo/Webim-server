@@ -27,14 +27,16 @@ var ObjCtrl = function() {
 
         var index = req.params.index;
         var file = req.params.file;
-        var fullfile = Constantes.paths.data + file;
+        var fullfile = Constantes.paths.data + file+'d/'+file+index+'.objpart'; 
 
         if( ! fs.existsSync(fullfile)){
+            res.status(520);
             res.json({error:"Ce fichier n'a pas été trouvé. "});
             return ;
         }
 
-        var content = fs.readFileSync(fullfile+''+index+'.objpart', 'utf8');
+
+        var content = null;//fs.readFileSync(fullfile, 'utf8');
         res.json({content : content});
 
     };
