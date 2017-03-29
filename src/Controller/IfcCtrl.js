@@ -94,7 +94,8 @@ var IfcCtrl = function(){
 	};
 
     /**
-     * Récupère les infos
+     * Récupère les infos :
+     * Si le fichier est trop petit pour etre pdécoupé, on renvoie l'obj au lieu de du global.json
      * @param req
      * @param res
      * @param next
@@ -128,10 +129,18 @@ var IfcCtrl = function(){
             }
 
         }else{
-            var infos = fs.readFileSync(globalfile, 'utf8');
             var mtl = fs.readFileSync(mtlfile, 'utf8');
 
-            res.json({infos:infos,mtl:mtl});
+            var global = JSON.parse(globalfile);
+
+            if( global.parts.length < 2) {
+                var obj = fs.readFileSync(ifcfile.'.obj', 'utf8');
+                res.json({obj:obj,mtl:mtl});
+            }else {
+                var infos = fs.readFileSync(globalfile, 'utf8');
+                res.json({infos:infos,mtl:mtl});
+            }
+
         }
     };
 
