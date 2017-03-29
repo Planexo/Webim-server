@@ -1,0 +1,12 @@
+{
+"part0":{"filename":"./data/Results.ifc0.objpart","bounds":{"x":[0.000000,0.000000],"y":[0.000000,0.000000],"z":[0.000000,0.000000]}},
+"part1":{"filename":"./data/Results.ifc1.objpart","bounds":{"x":[0.000000,0.000000],"y":[0.000000,0.000000],"z":[0.000000,0.000000]}},
+"part2":{"filename":"./data/Results.ifc2.objpart","bounds":{"x":[0.000000,0.000000],"y":[0.000000,0.000000],"z":[0.000000,0.000000]}},
+"part3":{"filename":"./data/Results.ifc3.objpart","bounds":{"x":[0.000000,0.000000],"y":[0.000000,0.000000],"z":[0.000000,0.000000]}},
+"part4":{"filename":"./data/Results.ifc4.objpart","bounds":{"x":[0.000000,0.000000],"y":[0.000000,0.000000],"z":[0.000000,0.000000]}},
+"part5":{"filename":"./data/Results.ifc5.objpart","bounds":{"x":[0.000000,0.000000],"y":[0.000000,0.000000],"z":[0.000000,0.000000]}},
+"part6":{"filename":"./data/Results.ifc6.objpart","bounds":{"x":[0.000000,0.000000],"y":[0.000000,0.000000],"z":[0.000000,0.000000]}},
+"part7":{"filename":"./data/Results.ifc7.objpart","bounds":{"x":[0.000000,0.000000],"y":[0.000000,0.000000],"z":[0.000000,0.000000]}},
+"part8":{"filename":"./data/Results.ifc8.objpart","bounds":{"x":[0.000000,0.000000],"y":[0.000000,0.000000],"z":[0.000000,0.000000]}},
+"part9":{"filename":"./data/Results.ifc9.objpart","bounds":{"x":[0.000000,0.000000],"y":[0.000000,0.000000],"z":[0.000000,0.000000]}}
+}

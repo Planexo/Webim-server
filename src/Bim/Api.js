@@ -9,10 +9,36 @@ var Constantes = require('../Constantes');
  * Cette classe fait office d'interface entre l'application et les outils BIM
  * @returns {{}}
  * @constructor
- * TODO : compléter la liste des fonctions
  */
 var BimApi = function () {
 	var self = {};
+
+    /**
+     * vitesse de navigation du client en Ko/s réupérée dans un store par exemple.
+     * on se calibre sur la 2.75G
+     *
+     * https://fr.wikipedia.org/wiki/3G
+     *
+     * http://www.supportduweb.com/scripts_tutoriaux-code-source-44-evaluer-la-vitesse-de-connexion-en-javascript.html
+     *
+     * @type {number}
+     */
+    var vitesseConnexion = 512;
+
+    /**
+     * temps minimal souhaité pour afficher une part de l'objet demandé
+     * @type {number}
+     */
+    var tempsMinimal = 2;
+
+    /**
+     * Divise un fichier en plusieurs parties égales
+     * @param objSize
+     * @returns {Array}
+     */
+    self.numberOfParts = function (objSize) {
+        return parseInt(  ((objSize/1000) / vitesseConnexion) / tempsMinimal );
+    };
 
     /**
      * Liste des exécutables
@@ -20,7 +46,8 @@ var BimApi = function () {
      */
 	var executables = {
 	    ifcObj: "bin/IfcObj",
-	    ifcConvert: "bin/IfcConvert"
+	    ifcConvert: "bin/IfcConvert",
+        objCuter: "bin/ObjCuter"
     };
 
     /**
@@ -83,9 +110,30 @@ var BimApi = function () {
      * @param outdir
      * @returns {{parts: string}}
      */
-	self.divideObj = function (obj, outdir) {
-		return {parts:'to complete'}; 
-	}
+	self.divideObj = function (objpath, objname, K,  outdir, callback) {
+        var size = fs.statSync(objpath+objname).size;
+
+        console.log("size : " + size);
+
+        if( ! K){
+            K = self.numberOfParts(size);
+            console.log("K = "+K);
+        }
+
+        //Si la connexion peut supporter un objet entier, pas besoin de le découper
+
+        var ret = spawn(executables.objCuter,[objpath, objname, K, outdir]);
+        if(K < 2){
+            return 1;
+        }
+
+        if(callback)
+            callback(ret.error, ret.stdout, ret.stderr);
+
+        console.log(ret.stdout);
+
+        return K;
+	};
 
 	return self;
 };

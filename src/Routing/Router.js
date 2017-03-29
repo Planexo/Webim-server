@@ -18,7 +18,8 @@ var base = '/ifc';
 router.get(base+'/:file', IfcCtrl.get);
 router.get(base+'/files/:directory', IfcCtrl.getAll);
 router.get(base+'/parts/:file', IfcCtrl.getParts);  
-router.get(base+'/mtl/:file', IfcCtrl.getMtl); 
+router.get(base+'/infos/:file', IfcCtrl.getInfos);
+router.get(base+'/mtl/:file', IfcCtrl.getMtl);
 router.get(base+'/obj/:file', IfcCtrl.getObj); 
 router.post(base, IfcCtrl.post); 
 
@@ -29,10 +30,10 @@ router.post(base, IfcCtrl.post);
 --------------------------------------------------------------------
 */
 //TODO
-//var ObjCtrl = require('../src/Controller/ObjCtrl');
+var ObjCtrl = require('../Controller/ObjCtrl')();
 
-//base = '/obj';
-//router.get(base+'/', ObjCtrl.get);
+base = '/obj';
+router.get(base+'/parts/:file', ObjCtrl.getParts);
 //router.get(base+'/:file', ObjCtrl.getObj);
 
 
@@ -41,7 +42,7 @@ router.post(base, IfcCtrl.post);
 --------------------------------------------------------------------
 */
 //TODO
-//var MtlCtrl = require('../src/Controller/MtlCtrl');
+//var MtlCtrl = require('../Controller/MtlCtrl');
 
 //base = '/mtl';
 //router.get(base+'/', MtlCtrl.get);

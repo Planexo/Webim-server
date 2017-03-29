@@ -47,7 +47,7 @@ var IfcCtrl = function(){
 		var cacheName = 'getPartsof'+fullfile;
 
 		//On vérifie si ce cache existe et s'il est à jour. Si oui, on renvoie directement les fichiers demandés
-        if( cache.getIfRecent(cacheName) ){
+        //if( cache.getIfRecent(cacheName) ){
             console.log('Generated with cache system');
 
             var mtl = fs.readFileSync(fullfile+'.mtl', 'utf8');
@@ -55,7 +55,7 @@ var IfcCtrl = function(){
 
             res.json({obj:obj,mtl:mtl});
             return;
-        }
+        //}
 
 
         bimapi.IfcToMtlObj(
@@ -91,7 +91,49 @@ var IfcCtrl = function(){
                 }
             }
         );
-	}
+	};
+
+    /**
+     * Récupère les infos
+     * @param req
+     * @param res
+     * @param next
+     */
+    self.getInfos = function(req, res, next){
+
+        var file = req.params.file;
+
+        var ifcfile = Constantes.paths.data + file;
+        var globalfile = Constantes.paths.data + file + '.obj.global.json';
+        var mtlfile = Constantes.paths.data + file + '.mtl';
+
+        if( ! fs.existsSync(globalfile)){
+
+            if( ! fs.existsSync(ifcfile)){
+                res.status(520);
+                res.json({error: "Le fichier "+file+" n'a pas été déposé. "});
+            }else{
+                console.log("Génération de l'objet en cours ...");
+
+                var directory = ifcfile+'.objd/';
+                if( ! fs.existsSync(directory) ){
+                    fs.mkdirSync(directory);
+                }
+
+                res.status(520);
+                res.json({error: "Le fichier n'a pas encore été découpé. La découpe a été lancée. "});
+
+                var K = 0;
+                bimapi.divideObj(Constantes.paths.data, file, K, directory);
+            }
+
+        }else{
+            var infos = fs.readFileSync(globalfile, 'utf8');
+            var mtl = fs.readFileSync(mtlfile, 'utf8');
+
+            res.json({infos:infos,mtl:mtl});
+        }
+    };
 
     /**
      * Cette fonction renvoie tous les fichiers ifc du répertoire demandé
@@ -135,8 +177,8 @@ var IfcCtrl = function(){
 		console.log("getting obj from ifc".cyan)  
 		
 		var file = req.params.file; 
-		var fullfile = './data/'+file; 
-		
+		var fullfile = './data/'+file;
+
 		var content = fs.readFileSync(fullfile, 'utf8');
 
 		//conversion : à terminer
@@ -154,12 +196,65 @@ var IfcCtrl = function(){
 	self.post = function (req, res, next) {
 		console.log("posting ifc".cyan)
 
-		/*console.log(req.body) 
-		console.log(req.body.directory) 
-		console.log(req.body.test) */
+		console.log(req.body)
+		console.log(req.body.file)
+        console.log(req.body.directory)
 
-		res.json({posted:true});
-	}
+        var file = req.body.filename || '';
+        var fileContent = req.body.fileContent || '';
+        var directory = req.body.directory || '';
+
+		if(file.length == 0 || file == undefined){
+            res.status(520);
+            res.json({error: "Aucun fichier n'a été soumis."});
+            return;
+        }
+        file = Constantes.paths.data + directory + file;
+
+		// Ecriture du fichier
+
+        try{
+            fs.writeFileSync(file, fileContent, 'utf8');
+        }catch(e){
+            res.status(520);
+            res.json({error: "L'écriture du fichier a échoué."});
+            return;
+        }
+
+        //Découpage automatique
+
+        bimapi.IfcToMtlObj(
+            file,
+            file+'.obj',
+            function (error, stdout, stderr) {
+
+                if(stderr.length == 0){
+                    console.log("[Bim API :: IfcToMtlObj] transformed ifc to obj".green);
+
+                    var obj = fs.readFileSync(file+'.obj', 'utf8');
+
+                    bimapi.divideObj(obj, Constantes.paths.data + directory);
+
+                    //on renvoie la réponse
+                    res.json({posted:true});
+                }else{
+                    console.log("[Bim API :: IfcToMtlObj] failed to transform ifc to obj".red);
+
+                    // Si le post a échoué, on supprime tout
+                    fs.unlink(file, function(err){ });
+                    fs.unlink(file+'.obj', function(err){ });
+                    fs.unlink(file+'.mtl', function(err){ });
+
+                    // 520 = Http Unknown Error
+                    res.status(520);
+
+                    //on renvoie l'erreur
+                    res.json({posted:false, error:error,stderr:stderr});
+                }
+            }
+        );
+
+	};
 
 	return self;
 };
